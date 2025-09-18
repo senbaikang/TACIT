@@ -1,6 +1,6 @@
 Package: TACIT
 Title: TACIT: Threshold based cell type assignment from single cell multiplex imaging data
-Version: 0.0.0.1
+Version: 1.0.0
 Authors@R: 
     person(given = "Khoa",
            family = "Huynh",
@@ -11,15 +11,27 @@ License: Apache License (>= 2)
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.3
 Imports:
-	Rmixmod,
-        Seurat,
-        segmented,
-        ggplot2,
-        dplyr,
-        readr,
-        data.table
+    Rmixmod,
+    caret,
+    Seurat,
+    segmented,
+    ggplot2,
+    dplyr,
+    readr,
+    mclust,
+    data.table,
+    uwot,
+    Matrix,
+    future,
+    future.apply,
+    parallelly,
+    RANN,
+    igraph,
+    rpart,
+    foreach,
+    doParallel
 Depends: 
     R (>= 2.10)
 Suggests: 

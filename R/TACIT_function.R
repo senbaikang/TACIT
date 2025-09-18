@@ -9,6 +9,26 @@ library(future)
 library(future.apply)
 library(parallelly)
 
+#' TACIT package helper functions
+#'
+#' Package imports used by functions in this file. These tags make sure
+#' the necessary namespaces are available when the package is built.
+#'
+#' @keywords internal
+#' @import Seurat
+#' @importFrom uwot umap umap_transform
+#' @importFrom Matrix Matrix
+#' @importFrom future availableCores plan
+#' @importFrom future.apply future_lapply
+#' @importFrom segmented segmented
+#' @importFrom stats lm AIC quantile
+#' @importFrom dplyr %>%
+#' @importFrom parallelly availableCores
+#' @importFrom caret knn3
+#' @importFrom mclust adjustedRandIndex
+#' @name TACIT
+"_PACKAGE"
+
 
 
 
@@ -24,6 +44,7 @@ library(parallelly)
 #' @param min.dist Minimum distance parameter for UMAP
 #' @param verbose Print progress messages
 #' @return Updated Seurat object with UMAP embedding
+#' @export
 FastRunUMAP <- function(seurat_obj,
                         subset_size = 50000,
                         n.components = 2,
@@ -150,6 +171,7 @@ FastRunUMAP <- function(seurat_obj,
 
 
 
+#' @export
 threshold_groups <- function(input_vector, thresholds) {
   # Initialize an empty vector to hold the group assignments
   groups <- numeric(length(input_vector))
@@ -176,6 +198,7 @@ threshold_groups <- function(input_vector, thresholds) {
 
 
 
+#' @export
 threshold_function <- function(k, data_anb, clusters) {
   ## Save the name of antibodies
   name <- colnames(data_anb[k])
@@ -312,6 +335,7 @@ threshold_function <- function(k, data_anb, clusters) {
   return(list(Group_Threshold_new, threshold_point_final))
 }
 
+#' @export
 TACIT <- function(data_expression, r, p, Signature) {
   
   data_anb=data_expression[,colnames(Signature)[-1]]
@@ -712,6 +736,7 @@ TACIT <- function(data_expression, r, p, Signature) {
 
 
 
+#' @export
 find_main_cell_types_with_subsets_and_markers <- function(signature) {
   # Extract cell types and markers
   cell_types <- signature[, 1]
@@ -754,6 +779,7 @@ find_main_cell_types_with_subsets_and_markers <- function(signature) {
 
 
 
+#' @export
 find_unique_marker_for_subsets <- function(signature) {
   cell_types <- signature[, 1]
   markers <- colnames(signature)[-1] # Exclude the first column which is Cell_type
@@ -809,6 +835,7 @@ find_unique_marker_for_subsets <- function(signature) {
 
 
 
+#' @export
 replace_zero_with_column_names <- function(binary_data) {
   result_matrix <- matrix("", nrow = nrow(binary_data), ncol = ncol(binary_data))
   
@@ -825,6 +852,7 @@ replace_zero_with_column_names <- function(binary_data) {
   return(result_matrix)
 }
 
+#' @export
 replace_zero_with_column_names_opt <- function(binary_data) {
   # Create result matrix
   result_matrix <- matrix("0", nrow = nrow(binary_data), ncol = ncol(binary_data))
@@ -844,6 +872,7 @@ replace_zero_with_column_names_opt <- function(binary_data) {
 
 
 
+#' @export
 class_accuracy <- function(df) {
   unique_classes <- unique(df$true)
   accuracies <- numeric(length(unique_classes))
@@ -868,6 +897,7 @@ class_accuracy <- function(df) {
 
 
 # Custom function to remove connections that exceed the threshold distance
+#' @export
 removeFarConnections <- function(tri, cutoff) {
   # Extract the coordinates of the points from the triangulation
   point_coords <- tri$delsgs[, 1:4]
@@ -893,6 +923,7 @@ removeFarConnections <- function(tri, cutoff) {
 
 library(mclust) # For Rand Index
 
+#' @export
 calculate_metrics <- function(predictions, true_labels) {
   # Ensure both are factors and have the same levels
   combined_levels <- union(levels(factor(predictions)), levels(factor(true_labels)))
@@ -959,6 +990,7 @@ calculate_metrics <- function(predictions, true_labels) {
 
 
 
+#' @export
 reorder_columns_based_on_signature <- function(Signature) {
   # Initialize the new order of columns, starting with cell_type
   new_col_order <- c("cell_type")
